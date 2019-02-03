@@ -481,7 +481,8 @@ class Limit(UnaryOp):
     if isinstance(self.limit, int):
       self.limit = Literal(self.limit)
     if isinstance(self.offset, int):
-      self.offset = Literal(self.offset)  
+      self.offset = Literal(self.offset)
+    print ("this is offset in super: " + str(offset))
   
     l =  int(self.limit(None))
     off = int(self.offset(None))
@@ -497,6 +498,7 @@ class Limit(UnaryOp):
     #       attribute, and will always evaluate to a number
     _limit = int(self.limit(None))
     _offset = int(self.offset(None))
+    print ("this is offset in iter: " + str(offset))
     nyielded = 0
     for i, row in enumerate(self.c):
       if nyielded >= _limit + _offset:
