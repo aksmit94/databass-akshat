@@ -482,14 +482,13 @@ class Limit(UnaryOp):
       self.limit = Literal(self.limit)
     if isinstance(self.offset, int):
       self.offset = Literal(self.offset)
-    print ("this is offset in super: " + str(offset))
   
     l =  int(self.limit(None))
     if(self.offset):
       off = int(self.offset(None))
     else:
       off = 0
-    print ("this is offset before exceptions: " + str(self.offset))
+      
     if l < 0:
       raise Exception("LIMIT must not be negative: %d" % l)
     elif off < 0:
@@ -505,7 +504,7 @@ class Limit(UnaryOp):
       _offset = int(self.offset(None))
     else:
         _offset = 0
-    print ("this is offset in iter: " + str(self.offset))
+        
     nyielded = 0
     for i, row in enumerate(self.c):
       if nyielded >= _limit + _offset:
