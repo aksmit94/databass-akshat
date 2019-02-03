@@ -496,13 +496,13 @@ class Limit(UnaryOp):
     #       You may assume that the expression will never reference an 
     #       attribute, and will always evaluate to a number
     _limit = int(self.limit(None))
-    _offset = int(self.(None))
+    _offset = int(self.offset(None))
     nyielded = 0
     for i, row in enumerate(self.c):
       if nyielded >= _limit + _offset:
         break
       nyielded += 1
-      if(nyielded >= _offset):
+      if(nyielded > _offset):
         yield row
 
   def to_str(self):
