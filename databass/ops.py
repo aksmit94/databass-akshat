@@ -497,7 +497,10 @@ class Limit(UnaryOp):
     #       You may assume that the expression will never reference an 
     #       attribute, and will always evaluate to a number
     _limit = int(self.limit(None))
-    _offset = int(self.offset(None))
+    if(self.offset):
+      _offset = int(self.offset(None))
+    else:
+        _offset = 0
     print ("this is offset in iter: " + str(self.offset))
     nyielded = 0
     for i, row in enumerate(self.c):
