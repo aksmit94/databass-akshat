@@ -469,7 +469,7 @@ class Filter(UnaryOp):
 class Limit(UnaryOp):
 
   # TODO: Edit this constructor to take as input an offset expression
-  def __init__(self, c, limit, offset):
+  def __init__(self, c, limit, offset=None):
     """
     @c            child operator
     @limit        number of tuples to return
