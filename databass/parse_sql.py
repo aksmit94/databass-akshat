@@ -309,8 +309,10 @@ class Visitor(NodeVisitor):
     # TODO: edit this code to pass OFFSET information to the Limit operator
     limit = children[2]
     offset = children[3]
-    #return Limit(None, children[2])
-    return Limit(None, limit, offset)
+    if not offset:
+      return Limit(None, children[2])
+    else:
+      return Limit(None, limit, offset)
 
   def visit_col_ref(self, node, children):
     return Attr(children[1], children[0])
