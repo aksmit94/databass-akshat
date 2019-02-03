@@ -485,7 +485,11 @@ class Limit(UnaryOp):
     print ("this is offset in super: " + str(offset))
   
     l =  int(self.limit(None))
-    off = int(self.offset(None))
+    if(self.offset):
+      off = int(self.offset(None))
+    else:
+      off = 0
+    print ("this is offset before exceptions: " + str(self.offset))
     if l < 0:
       raise Exception("LIMIT must not be negative: %d" % l)
     elif off < 0:
