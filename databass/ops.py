@@ -498,7 +498,7 @@ class Limit(UnaryOp):
     #       attribute, and will always evaluate to a number
     _limit = int(self.limit(None))
     _offset = int(self.offset(None))
-    print ("this is offset in iter: " + str(offset))
+    print ("this is offset in iter: " + str(self.offset))
     nyielded = 0
     for i, row in enumerate(self.c):
       if nyielded >= _limit + _offset:
