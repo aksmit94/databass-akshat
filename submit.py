@@ -32,7 +32,7 @@ def main(u1, u2, a, q):
   uni1 = u1
   uni2 = u2
   assignment = a
-  print("Uni1 = " + str(uni1) + "\n Uni2 = " + str(uni2) + "\n assignment = " + str(assignment))
+  print("Uni1 = " + str(u1) + "\n Uni2 = " + str(u2) + "\n assignment = " + str(assignment))
 
   if check_bad_uni(uni1):
     print("Your UNI should be in the format of AA1234.")
