@@ -29,6 +29,7 @@ def main(u1, u2, a, q):
   """
   Script to package up your DataBass submission.  You should run this in a UNIX-based environment.
   """
+  print u1,u2
   uni1 = u1
   uni2 = u2
   assignment = a
