@@ -9,10 +9,11 @@ check_bad_uni = lambda uni: uni is None or any(c not in digits for c in uni[-4:]
 
 def validate_uni(ctx, param, uni):
   if check_bad_uni(uni):
-    if param == "-u2" and uni == 'NONE': 
-      return
+    if param.name == "u2" and uni == "NONE": 
+      return uni
     msg = "UNI should be in the format of AA1234.\nYou submitted: %s" % uni
     raise click.BadParameter(msg)
+  return uni
 
 @click.command()
 @click.option("-u1", 
