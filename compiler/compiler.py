@@ -40,7 +40,6 @@ class CodeBlock(object):
     """
     for p in self.lines:
       p[0] += by
-      print p
 
   def indent_next(self):
     self.b_indent_next = True
@@ -133,8 +132,10 @@ class Scan(Op):
     The compiled code assumes that "db" is within scope can can be referenced
     """
     # XXX: implement this method
-    ctx.code.lines.append([0,"for row in db[\"data\"]:"])
-    # ctx.stack.pop().consume(ctx)
+    ctx.code.add_line("for row in" + " db[\"" + self.tablename + "\"]:")
+    ctx.code.indent_next()
+    if ctx.stack:
+      ctx.stack.pop().consume(ctx)
     return
 
 class Join(Op):
@@ -195,7 +196,13 @@ class Filter(Op):
     Addes code to ctx.code that applies the filter
     """
     # XXX: implement this method
+    for x in self.exprs:
+      ctx.code.add_line("if %s:" % x.compile())
 
+    ctx.code.indent_next()
+    # if hasattr(self, "c"):
+    ctx.stack.pop().consume(ctx)
+    return
                 
 class Project(Op):
   def __init__(self, c, exprs, aliases=[]):
@@ -279,7 +286,8 @@ class Print(Op):
     this method will generate printing code and add the code to the Code object in the context
     """
     # XXX: Implement this method
-    ctx.code.lines.append([0, "print row"])
+    ctx.code.add_line("print row")
+    # if hasattr(self, "c"):
     ctx.stack.pop().consume(ctx)
     return
 
