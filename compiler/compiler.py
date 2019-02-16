@@ -39,9 +39,8 @@ class CodeBlock(object):
     @by amount to increase the indentation for all lines
     """
     for p in self.lines:
-      p.insert(0, by)
+      p[0] += by
       print p
-      # p[0] += by
 
   def indent_next(self):
     self.b_indent_next = True
@@ -134,8 +133,8 @@ class Scan(Op):
     The compiled code assumes that "db" is within scope can can be referenced
     """
     # XXX: implement this method
-    ctx.code.lines.append(["for row in db[\"data\"]:"])
-    ctx.stack.pop().consume(ctx)
+    ctx.code.lines.append([0,"for row in db[\"data\"]:"])
+    # ctx.stack.pop().consume(ctx)
     return
 
 class Join(Op):
@@ -280,7 +279,7 @@ class Print(Op):
     this method will generate printing code and add the code to the Code object in the context
     """
     # XXX: Implement this method
-    ctx.code.lines.append(["print row"])
+    ctx.code.lines.append([0, "print row"])
     ctx.stack.pop().consume(ctx)
     return
 
