@@ -5,7 +5,7 @@ from db import Database
 class CodeBlock(object):
   """
   A helper class that the compiler uses to construct the compiled
-  python program.  It mainly helps manage indentation
+  python program. It mainly helps manage indentation
   """
   def __init__(self):
     self.lines = []
@@ -26,7 +26,7 @@ class CodeBlock(object):
     indent = 0
     if self.lines:
       indent = self.lines[-1][0]
-    if self.b_indent_next == True:
+    if self.b_indent_next:
       indent += 1
     return indent
 
@@ -39,7 +39,9 @@ class CodeBlock(object):
     @by amount to increase the indentation for all lines
     """
     for p in self.lines:
-      p[0] += by
+      p.insert(0, by)
+      print p
+      # p[0] += by
 
   def indent_next(self):
     self.b_indent_next = True
@@ -76,12 +78,14 @@ class Op(object):
     """
     if hasattr(self, "c"):
       # XXX: implement this 
-      # the operator has a child, so need to maintain the stack and continue the producer phase
-      pass
+      # the operator has a child, so need to  maintain the stack and continue the producer phase
+      ctx.stack.append(self)
+      self.c.produce(ctx)
+
     else:
       # XXX: implement this 
       # the operator doesn't have a child, so done with the producer phase and should start consumer phase
-      pass
+      self.consume(ctx)
 
   def consume(self, ctx):
     raise Exception("Op.consume not implemented")
@@ -130,6 +134,8 @@ class Scan(Op):
     The compiled code assumes that "db" is within scope can can be referenced
     """
     # XXX: implement this method
+    ctx.code.lines.append(["for row in db[\"data\"]:"])
+    ctx.stack.pop().consume(ctx)
     return
 
 class Join(Op):
@@ -274,6 +280,8 @@ class Print(Op):
     this method will generate printing code and add the code to the Code object in the context
     """
     # XXX: Implement this method
+    ctx.code.lines.append(["print row"])
+    ctx.stack.pop().consume(ctx)
     return
 
 class Count(Op):
