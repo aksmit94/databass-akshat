@@ -247,8 +247,16 @@ class Project(Op):
     Adds code to the ctx.code object that sets the "row" variable to the result of applying the projection operation.
     """
     # XXX: Implement this method
-    return
+    # Create a temp dict: proj
+    ctx.code.add_line("proj = dict()")
+    for exp, alias in zip(self.exprs, self.aliases):
+      ctx.code.add_line("proj[\'%s\'] = %s" % (alias,exp.compile()))
 
+    # Make row = proj
+    ctx.code.add_line("row = proj")
+    if ctx.stack:
+      ctx.stack.pop().consume(ctx)
+    return
 
 class Yield(Op):
   def __init__(self, c):

@@ -111,11 +111,11 @@ class TestUnits(unittest.TestCase):
         db = Database()
         db.register_table("data", data)
 
-        data = [dict(a=random.randint(0, 100), b=random.randint(0, 100), c=random.randint(0, 100), i=i)
-          		for i in range(10000)]
-
-        db = Database()
-       	db.register_table("data", data)
+        # data = [dict(a=random.randint(0, 100), b=random.randint(0, 100), c=random.randint(0, 100), i=i)
+        #   		for i in range(10000)]
+        #
+        # db = Database()
+       	# db.register_table("data", data)
 
         #   SELECT *
         #   FROM   (SELECT a AS a, b-c AS b
@@ -143,6 +143,7 @@ class TestUnits(unittest.TestCase):
         print "Project test results are:"
         print "Interpreted\t", timeit.timeit(lambda: list(q), number=10)
         print "Compiled\t", timeit.timeit(lambda: list(q.compile()(db)), number=10)
+
 
     def test_count(self):
         #Count test
