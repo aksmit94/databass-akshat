@@ -144,7 +144,6 @@ class TestUnits(unittest.TestCase):
         print "Interpreted\t", timeit.timeit(lambda: list(q), number=10)
         print "Compiled\t", timeit.timeit(lambda: list(q.compile()(db)), number=10)
 
-
     def test_count(self):
         #Count test
         #should work after updating the following:
@@ -167,6 +166,7 @@ class TestUnits(unittest.TestCase):
         print code
 
         assert list(q) == list(q.compile()(db))
+
 
         print "Count test results are:"
         print "Interpreted\t", timeit.timeit(lambda: list(q), number=10)

@@ -134,8 +134,9 @@ class Scan(Op):
     # XXX: implement this method
     ctx.code.add_line("for row in" + " db[\"" + self.tablename + "\"]:")
     ctx.code.indent_next()
-    if ctx.stack:
-      ctx.stack.pop().consume(ctx)
+    # if ctx.stack:
+    #   ctx.stack.pop().consume(ctx)
+    ctx.consume_next()
     return
 
 class Join(Op):
@@ -200,8 +201,7 @@ class Filter(Op):
       ctx.code.add_line("if %s:" % x.compile())
 
     ctx.code.indent_next()
-    # if hasattr(self, "c"):
-    ctx.stack.pop().consume(ctx)
+    ctx.consume_next()
     return
                 
 class Project(Op):
@@ -254,8 +254,7 @@ class Project(Op):
 
     # Make row = proj
     ctx.code.add_line("row = proj")
-    if ctx.stack:
-      ctx.stack.pop().consume(ctx)
+    ctx.consume_next()
     return
 
 class Yield(Op):
@@ -295,8 +294,8 @@ class Print(Op):
     """
     # XXX: Implement this method
     ctx.code.add_line("print row")
-    # if hasattr(self, "c"):
-    ctx.stack.pop().consume(ctx)
+    if ctx.stack:
+      ctx.stack.pop().consume(ctx)
     return
 
 class Count(Op):
@@ -321,7 +320,20 @@ class Count(Op):
     """
     # XXX: Implement this method so that it initializes a counter BEFORE the for loops
     #      put generates the row that represents the aggregation result AFTER the for loops
-    
+    ctx.code.add_line("n = 0")
+    indent = ctx.code.cur_indent
+    if hasattr(self, "c"):
+      # XXX: implement this
+      # the operator has a child, so need to  maintain the stack and continue the producer phase
+      ctx.stack.append(self)
+      self.c.produce(ctx)
+    else:
+      # XXX: implement this
+      # the operator doesn't have a child, so done with the producer phase and should start consumer phase
+      self.consume(ctx)
+
+    ctx.code.lines.append([indent, "row = dict(count=n)"])
+
   def consume(self, ctx):
     """
     @ctx context object
@@ -329,6 +341,8 @@ class Count(Op):
     Generates code to update the counter
     """
     # XXX: Implement this method
+    ctx.code.add_line("n += 1")
+    ctx.consume_next()
     return
 
 
